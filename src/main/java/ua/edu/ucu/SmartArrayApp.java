@@ -1,9 +1,11 @@
 package ua.edu.ucu;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import ua.edu.ucu.functions.MyComparator;
 import ua.edu.ucu.functions.MyFunction;
 import ua.edu.ucu.functions.MyPredicate;
+import ua.edu.ucu.smartarr.*;
 
 public class SmartArrayApp {
 
@@ -50,10 +52,22 @@ public class SmartArrayApp {
 
     public static String[]
             findDistinctStudentNamesFrom2ndYearWithGPAgt4AndOrderedBySurname(Student[] students) {
+        MyPredicate prd = t -> (((Student)t).getYear() == 2 && ((Student)t).getGPA() >= 4);
+        MyComparator cmp = (o1, o2) -> (((Student)o1).getSurname().compareTo(((Student)o2).getSurname()));
 
+        SmartArray st_sa = new BaseArray(students);
+        st_sa = new DistinctDecorator(st_sa);
+        st_sa = new FilterDecorator(st_sa, prd);
+        st_sa = new SortDecorator(st_sa, cmp);
+
+        Object[] fin_arr = st_sa.toArray();
+        String[] fin_str = new String[st_sa.size()];
+        for (int i = 0; i < st_sa.size(); i++) {
+            fin_str[i] = String.format("%s %s", ((Student) fin_arr[i]).getSurname(), ((Student) fin_arr[i]).getName());
+        }
         // Hint: to convert Object[] to String[] - use the following code
-        //Object[] result = studentSmartArray.toArray();
-        //return Arrays.copyOf(result, result.length, String[].class);
-        return null;
+//        Object[] result = studentSmartArray.toArray();
+//        return Arrays.copyOf(result, result.length, String[].class);
+        return fin_str;
     }
 }
