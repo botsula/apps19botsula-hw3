@@ -1,5 +1,6 @@
 package ua.edu.ucu.smartarr;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 // Base array for decorators
@@ -8,12 +9,12 @@ public class BaseArray implements SmartArray {
     private Object[] arr;
 
     public BaseArray(Object[] integers) {
-        this.arr = integers;
+        this.arr = Arrays.copyOf(integers, integers.length);
     }
 
     @Override
     public Object[] toArray() {
-        return arr;
+        return Arrays.copyOf(arr, arr.length);
     }
 
     @Override
